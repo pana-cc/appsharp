@@ -31,6 +31,8 @@ Console.WriteLine("Within autorelease pool...");
 
 // Create an Objective-C Window...
 using var nsWindow = new NSWindow("AppSharp FirstApp");
+using var rootView = new NSTextField();
+nsWindow.ContentView = rootView;
 
 // Objective-C Runloop...
 nsAppRef.Run();

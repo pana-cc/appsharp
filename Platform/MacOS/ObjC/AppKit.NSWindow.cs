@@ -18,12 +18,48 @@ public static partial class AppKit
         private static readonly Sel MakeKeyAndOrderFrontSel = new Sel("makeKeyAndOrderFront:");
         private static readonly Sel SetTitleSel = new Sel("setTitle:");
 
+        private static readonly Sel ContentViewSel = new Sel("contentView");
+
+        private static readonly Sel SetContentViewSel = new Sel("setContentView:");
+
+        private NSView? contentView;
+
         public NSWindow(nint id, bool releaseOnDispose = true) : base(id, releaseOnDispose)
         {
         }
 
         public NSWindow(string title) : this(CreateNSWindowWithTitle(title))
         {
+        }
+
+        public NSView? ContentView
+        {
+            get
+            {
+                nint objCContentView = ObjC.objc_msgSend_retIntPtr(this, ContentViewSel);
+                nint cSharpValue = this.contentView == null ? (nint)0 : (nint)this.contentView;
+
+                if (objCContentView != cSharpValue)
+                {
+                    throw new ObjCException("NSWindow contentView Objective-C and C# values mismatch.");
+                }
+
+                return this.contentView;
+            }
+
+            set
+            {
+                if (value == null)
+                {
+                    ObjC.objc_msgSend_retIntPtr(this, SetContentViewSel, 0);
+                    this.contentView = null;
+                }
+                else
+                {
+                    ObjC.objc_msgSend_retIntPtr(this, SetContentViewSel, value);
+                    this.contentView = value;
+                }
+            }
         }
 
         private static nint CreateNSWindowWithTitle(string title)
@@ -60,19 +96,19 @@ public static partial class AppKit
         }
 
         [DllImport(FoundationLib, EntryPoint = "objc_msgSend")]
-        private static extern IntPtr objc_msgSend_retIntPtr(IntPtr obj, IntPtr sel, NSRect rect, uint nswindowstylemask, uint nsbackingstoretype, bool defer);
+        private static extern IntPtr objc_msgSend_retIntPtr(nint obj, nint sel, NSRect rect, uint nswindowstylemask, uint nsbackingstoretype, bool defer);
 
         [DllImport(CoreFoundationLib, EntryPoint = "objc_msgSend")]
-        private static extern IntPtr objc_msgSend_retIntPtr(IntPtr obj, IntPtr sel, NSPoint point);
+        private static extern IntPtr objc_msgSend_retIntPtr(nint obj, nint sel, NSPoint point);
 
         [DllImport(CoreFoundationLib, EntryPoint = "objc_msgSend")]
-        private static extern IntPtr objc_msgSend_retIntPtr(IntPtr obj, IntPtr sel, NSSize point);
+        private static extern IntPtr objc_msgSend_retIntPtr(nint obj, nint sel, NSSize point);
 
         [DllImport(CoreFoundationLib, EntryPoint = "objc_msgSend")]
-        private static extern IntPtr objc_msgSend_retIntPtr(IntPtr obj, IntPtr sel, bool b);
+        private static extern IntPtr objc_msgSend_retIntPtr(nint obj, nint sel, bool b);
 
         [DllImport(CoreFoundationLib, EntryPoint = "objc_msgSend")]
-        private static extern IntPtr objc_msgSend_retIntPtr(IntPtr obj, IntPtr sel, IntPtr id1);
+        private static extern IntPtr objc_msgSend_retIntPtr(nint obj, nint sel, nint id1);
 
         protected static nint InitWithContentRectStyleMaskBackingDefer(nint id, NSRect rect, uint nswindowstylemask, uint nsbackingstoretype, bool defer)
             => objc_msgSend_retIntPtr(id, InitWithContentRectSel, rect, nswindowstylemask, nsbackingstoretype, defer);
