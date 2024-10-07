@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platform", "Platform", "{E641A516-81F7-4D16-B17C-39356F5C4174}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MacOS", "Platform\MacOS\MacOS.csproj", "{34F80381-9E61-4240-9504-1080BDE90E32}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps", "Apps", "{61C8AE2B-0133-4E4B-8E8D-3271271AFFE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirstApp", "Apps\FirstApp\FirstApp.csproj", "{6A6F76BF-3664-407D-834D-78A94E1A685C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{34F80381-9E61-4240-9504-1080BDE90E32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34F80381-9E61-4240-9504-1080BDE90E32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34F80381-9E61-4240-9504-1080BDE90E32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34F80381-9E61-4240-9504-1080BDE90E32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A6F76BF-3664-407D-834D-78A94E1A685C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A6F76BF-3664-407D-834D-78A94E1A685C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A6F76BF-3664-407D-834D-78A94E1A685C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A6F76BF-3664-407D-834D-78A94E1A685C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{34F80381-9E61-4240-9504-1080BDE90E32} = {E641A516-81F7-4D16-B17C-39356F5C4174}
+		{6A6F76BF-3664-407D-834D-78A94E1A685C} = {61C8AE2B-0133-4E4B-8E8D-3271271AFFE7}
+	EndGlobalSection
+EndGlobal
