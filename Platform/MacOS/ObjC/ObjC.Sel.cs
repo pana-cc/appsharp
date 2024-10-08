@@ -41,10 +41,8 @@ public static partial class ObjC
             {
                 if (!this.init)
                 {
-                    nint cfstrSelector = CFString(name);
-                    this.selector = NSSelectorFromString(cfstrSelector);
-                    CFRelease(cfstrSelector);
-
+                    using var cfStringRef = new CFStringRef(name);
+                    this.selector = NSSelectorFromString(cfStringRef);
                     this.init = true;
                 }
 

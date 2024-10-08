@@ -87,9 +87,8 @@ public static partial class AppKit
 
             if (title != null)
             {
-                nint titleStr = CFString(title);
-                objc_msgSend_retIntPtr(nsWindowRef, SetTitleSel, titleStr);
-                CFRelease(titleStr);
+                using var cfStringRef = new CFStringRef(title);
+                objc_msgSend_retIntPtr(nsWindowRef, SetTitleSel, cfStringRef);
             }
             
             return nsWindowRef;

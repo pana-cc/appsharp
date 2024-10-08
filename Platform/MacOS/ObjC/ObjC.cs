@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace AppSharp.Platform.MacOS;
@@ -24,13 +25,22 @@ public static partial class ObjC
     public static extern void objc_msgSend(nint obj, nint sel);
 
     [DllImport(LibObjCLib, EntryPoint = "objc_msgSend")]
+    public static extern void objc_msgSend(nint obj, nint sel, bool v1);
+
+    [DllImport(LibObjCLib, EntryPoint = "objc_msgSend")]
     public static extern void objc_msgSend(nint obj, nint sel, nint id1);
+
+    [DllImport(LibObjCLib, EntryPoint = "objc_msgSend")]
+    public static extern void objc_msgSend(nint obj, nint sel, int id1);
 
     [DllImport(LibObjCLib)]
     public static extern nint objc_getProtocol(string name);
 
     [DllImport(LibObjCLib)]
     public static extern bool class_addProtocol(nint objcclass, nint name);
+
+    [DllImport(LibObjCLib, EntryPoint = "objc_msgSend")]
+    public static extern bool objc_msgSend_retBool(nint obj, nint sel);
 
     [DllImport(LibObjCLib, EntryPoint = "objc_msgSend")]
     public static extern bool objc_msgSend_retBool(nint obj, nint sel, int int1);

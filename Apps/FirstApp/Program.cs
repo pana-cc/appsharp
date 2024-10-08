@@ -31,7 +31,15 @@ Console.WriteLine("Within autorelease pool...");
 
 // Create an Objective-C Window...
 using var nsWindow = new NSWindow("AppSharp FirstApp");
-using var rootView = new NSTextField();
+using var rootView = new NSTextField()
+{
+    StringValue = "Hello World!",
+    IsBezeled = false,
+    IsEditable = false
+};
+
+Console.WriteLine("Text field str: " + rootView.StringValue);
+
 nsWindow.ContentView = rootView;
 
 // Objective-C Runloop...

@@ -89,14 +89,13 @@ public static partial class ObjC
         /// <returns></returns>
         public Class Extend(string name, int extraBytes = 0)
         {
-            nint classNameCFString = CFString(name);
-            nint derivedClass = objc_allocateClassPair(this, classNameCFString, extraBytes);
+            using var classNameCfStringRef = new CFStringRef(name);
+            nint derivedClass = objc_allocateClassPair(this, classNameCfStringRef, extraBytes);
             if (derivedClass == 0)
             {
                 throw new ObjCException($"Objective-C allocating derived class '{name}' from class '{this.Name}' returned 0.");
             }
 
-            CFRelease(classNameCFString);
             return new Class(name, derivedClass);
         }
 
