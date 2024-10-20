@@ -3,7 +3,7 @@ using static AppSharp.Platform.MacOS.ObjC;
 
 namespace AppSharp.Platform.MacOS;
 
-public static class CoreFoundation
+public static partial class CoreFoundation
 {
     public const string CoreFoundationLib = "/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation";
 
@@ -44,37 +44,4 @@ public static class CoreFoundation
     private static extern nint CFStringCreateWithCString(nint allocator, string value, uint encoding);
 
     private const uint kCFStringEncodingUTF8 = 0x08000100;
-
-    /// <summary>
-    /// Abstracts away the use of CFString + CFRelease into stack bound:
-    /// <code>
-    /// using var cfStr = new CFStringRef(str);
-    /// </code>
-    /// </summary>
-    public ref struct CFStringRef
-    {
-        public readonly nint Id;
-
-        public CFStringRef(nint id)
-        {
-            this.Id = id;
-        }
-
-        public CFStringRef(string? str) : this(CFString(str))
-        {
-        }
-
-        public void Dispose()
-        {
-            if (this.Id != 0)
-            {
-                CFRelease(this.Id);
-            }
-        }
-
-        public static implicit operator nint(CFStringRef cfStringRef)
-        {
-            return cfStringRef.Id;
-        }
-    }
 }

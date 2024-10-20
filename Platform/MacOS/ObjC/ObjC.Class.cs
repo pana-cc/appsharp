@@ -14,12 +14,12 @@ public static partial class ObjC
         public static readonly Sel InitSel = new Sel("init");
 
         private bool init;
-        private nint id;
+        private nint self;
 
         public Class(string name)
         {
             this.Name = name;
-            this.id = 0;
+            this.self = 0;
             this.init = false;
         }
 
@@ -31,7 +31,7 @@ public static partial class ObjC
             }
             
             this.Name = name;
-            this.id = id;
+            this.self = id;
             this.init = true;
         }
 
@@ -44,21 +44,21 @@ public static partial class ObjC
                 if (!this.init)
                 {
                     this.init = true;
-                    this.id = objc_getClass(this.Name);
+                    this.self = objc_getClass(this.Name);
 
-                    if (this.id == 0)
+                    if (this.self == 0)
                     {
                         throw new ObjCException($"Objective-C objc_getClass for '{this.Name}' returned 0.");
                     }
                 }
 
-                return this.id;
+                return this.self;
             }
         }
 
         public nint New()
         {
-            id = this.Alloc();
+            nint id = this.Alloc();
 
             id = objc_msgSend_retIntPtr(id, InitSel);
             if (id == 0)

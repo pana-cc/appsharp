@@ -1,4 +1,5 @@
 using static AppSharp.Platform.MacOS.CoreFoundation;
+using static AppSharp.Platform.MacOS.CoreGraphics;
 using static AppSharp.Platform.MacOS.ObjC;
 
 namespace AppSharp.Platform.MacOS;
@@ -21,6 +22,14 @@ public static partial class AppKit
 
         public static readonly Sel IsEditableSel = new Sel("editable");
 
+        public static readonly Sel SetDrawsBackgroundSel = new Sel("setDrawsBackground:");
+
+        public static readonly Sel DrawsBackgroundSel = new Sel("drawsBackground");
+
+        public static readonly Sel TextColorSel = new Sel("textColor");
+
+        public static readonly Sel SetTextColorSel = new Sel("setTextColor:");
+
         public NSTextField(nint id, bool releaseOnDispose = true) : base(id, releaseOnDispose)
         {
         }
@@ -41,7 +50,7 @@ public static partial class AppKit
             set
             {
                 using var cfStringRef = new CFStringRef(value);
-                objc_msgSend(this, SetStringValueSel, cfStringRef.Id);
+                objc_msgSend(this, SetStringValueSel, cfStringRef.Self);
             }
         }
 
@@ -58,6 +67,19 @@ public static partial class AppKit
             }
         }
 
+        public bool DrawsBackground
+        {
+            get
+            {
+                return objc_msgSend_retBool(this, DrawsBackgroundSel);
+            }
+
+            set
+            {
+                objc_msgSend(this, SetDrawsBackgroundSel, value);
+            }
+        }
+
         public bool IsEditable
         {
             get
@@ -68,6 +90,23 @@ public static partial class AppKit
             set
             {
                 objc_msgSend(this, SetIsEditableSel, value);
+            }
+        }
+
+        public NSColorRef TextColor
+        {
+            get
+            {
+                // What if it is a derived type? Implement "Marshal id ref"
+                // TODO: Probably we need to retain it if we want to dispose it later...
+                // Or for performance if we will keep it in struct ref - opt out and don't retain or release...
+                // return new NSColorRef(objc_msgSend_retIntPtr(this, TextColorSel));
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                objc_msgSend(this, SetTextColorSel, value);
             }
         }
 

@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
 using static AppSharp.Platform.MacOS.AppKit;
+using static AppSharp.Platform.MacOS.CoreAnimation;
+using static AppSharp.Platform.MacOS.CoreGraphics;
 using static AppSharp.Platform.MacOS.Foundation;
 using static AppSharp.Platform.MacOS.ObjC;
 
@@ -31,14 +33,35 @@ Console.WriteLine("Within autorelease pool...");
 
 // Create an Objective-C Window...
 using var nsWindow = new NSWindow("AppSharp FirstApp");
-using var rootView = new NSTextField()
+
+// This view always gets resized based on the NSWindow
+using var rootView = new NSView()
 {
-    StringValue = "Hello World!",
-    IsBezeled = false,
-    IsEditable = false
+    Flipped = true
 };
 
-Console.WriteLine("Text field str: " + rootView.StringValue);
+using var red = NSColorRef.RGBA(1, 0, 0, 1);
+using var labelView = new NSTextField()
+{
+    Frame = new NSRect(20, 20, 100, 300),
+
+    TextColor = red,
+
+    DrawsBackground = false,
+    StringValue = "Hello World! dqwm lqwmd lwqkmd lqwkmd lqwkdm",
+    IsBezeled = false,
+    IsEditable = false,
+};
+rootView.AddSubview(labelView);
+
+using var heartShapeLayer = new CAShapeLayer();
+
+using var border1 = new NSView()
+{
+    WantsLayer = true,
+    Frame = new NSRect(100, 50, 50, 50)
+};
+rootView.AddSubview(border1);
 
 nsWindow.ContentView = rootView;
 
