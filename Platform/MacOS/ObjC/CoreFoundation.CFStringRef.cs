@@ -1,3 +1,5 @@
+using System.Runtime.InteropServices;
+
 namespace AppSharp.Platform.MacOS;
 
 public static partial class CoreFoundation

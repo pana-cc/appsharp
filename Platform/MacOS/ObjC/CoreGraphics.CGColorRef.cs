@@ -7,7 +7,7 @@ public static partial class CoreGraphics
     public ref struct CGColorRef
     {
         [DllImport(CoreGraphicsLib)]
-        private static extern nint CGColorCreateGenericRGB(double red, double green, double blue, double alpha);
+        private static extern nint CGColorCreateGenericRGB(NFloat red, NFloat green, NFloat blue, NFloat alpha);
 
         [DllImport(CoreGraphicsLib)]
         private static extern void CGColorRelease(nint self);
@@ -24,9 +24,7 @@ public static partial class CoreGraphics
             this.Self = self;
         }
 
-        public CGColorRef(double red, double green, double blue, double alpha) : this(CGColorCreateGenericRGB(red, green, blue, alpha))
-        {
-        }
+        public static CGColorRef RGBA(NFloat red, NFloat green, NFloat blue, NFloat alpha) => new CGColorRef(CGColorCreateGenericRGB(red, green, blue, alpha));
 
         public void Dispose()
         {

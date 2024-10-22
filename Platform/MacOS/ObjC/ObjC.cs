@@ -19,6 +19,9 @@ public static partial class ObjC
     public static extern nint objc_msgSend_retIntPtr(nint obj, nint sel);
 
     [DllImport(LibObjCLib, EntryPoint = "objc_msgSend")]
+    public static extern NFloat objc_msgSend_retNFloat(nint obj, nint sel);
+
+    [DllImport(LibObjCLib, EntryPoint = "objc_msgSend")]
     public static extern nint objc_msgSend_retIntPtr(nint obj, nint sel, nint id1);
 
     [DllImport(LibObjCLib, EntryPoint = "objc_msgSend")]
@@ -26,6 +29,12 @@ public static partial class ObjC
 
     [DllImport(LibObjCLib, EntryPoint = "objc_msgSend")]
     public static extern void objc_msgSend(nint obj, nint sel);
+
+    [DllImport(LibObjCLib, EntryPoint = "objc_msgSend")]
+    public static extern void objc_msgSend(nint obj, nint sel, NFloat v);
+
+    [DllImport(LibObjCLib, EntryPoint = "objc_msgSend")]
+    public static extern void objc_msgSend(nint obj, nint sel, nint a1, uint v2);
 
     [DllImport(LibObjCLib, EntryPoint = "objc_msgSend")]
     public static extern void objc_msgSend(nint obj, nint sel, bool v1);
@@ -57,6 +66,12 @@ public static partial class ObjC
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate bool SelfSelId_RetBool_Callback(nint self, nint sel, nint sender);
 
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate void SelfSelId_Callback(nint self, nint sel, nint sender);
+
     [DllImport(LibObjCLib, EntryPoint = "class_addMethod")]
     private static extern bool class_addMethod_retBool(nint objcclass, nint name, [MarshalAs(UnmanagedType.FunctionPtr)]SelfSelId_RetBool_Callback fun, [MarshalAs(UnmanagedType.LPStr)] string types);
+
+    [DllImport(LibObjCLib, EntryPoint = "class_addMethod")]
+    private static extern bool class_addMethod(nint objcclass, nint name, [MarshalAs(UnmanagedType.FunctionPtr)]SelfSelId_Callback fun, [MarshalAs(UnmanagedType.LPStr)] string types);
 }

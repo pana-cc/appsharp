@@ -28,7 +28,7 @@ public static partial class AppKit
         {
         }
 
-        public NSWindow(string title) : this(CreateNSWindowWithTitle(title))
+        public NSWindow(string title) : this(CreateNSWindowWithTitle(Class.Alloc(), title))
         {
         }
 
@@ -62,10 +62,10 @@ public static partial class AppKit
             }
         }
 
-        private static nint CreateNSWindowWithTitle(string title)
+        protected static nint CreateNSWindowWithTitle(nint self, string title)
         {
             nint nsWindowRef = InitWithContentRectStyleMaskBackingDefer(
-                Class.Alloc(),
+                self,
                 rect: new NSRect {
                     origin = new NSPoint {
                         x = 200,

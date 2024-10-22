@@ -109,7 +109,7 @@ public static partial class ObjC
             return this;
         }
 
-        public Class AddMethod(string selector, SelfSelId_RetBool_Callback applicationShouldTerminate)
+        public Class AddMethod(string selector, SelfSelId_RetBool_Callback method)
         {
             nint objCSelector = sel_registerName(selector);
             if (objCSelector == 0)
@@ -117,7 +117,23 @@ public static partial class ObjC
                 throw new ObjCException($"Objective-C sel_registerName for '{selector}' returned 0.");
             }
 
-            if (!class_addMethod_retBool(this, objCSelector, applicationShouldTerminate, "@:@"))
+            if (!class_addMethod_retBool(this, objCSelector, method, "@:@"))
+            {
+                throw new ObjCException($"Objective-C class_addMethod_retBool for '{selector}' returned 0.");
+            }
+
+            return this;
+        }
+
+        public Class AddMethod(string selector, SelfSelId_Callback method)
+        {
+            nint objCSelector = sel_registerName(selector);
+            if (objCSelector == 0)
+            {
+                throw new ObjCException($"Objective-C sel_registerName for '{selector}' returned 0.");
+            }
+
+            if (!class_addMethod(this, objCSelector, method, "@:@"))
             {
                 throw new ObjCException($"Objective-C class_addMethod_retBool for '{selector}' returned 0.");
             }

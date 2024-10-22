@@ -1,3 +1,4 @@
+using static AppSharp.Platform.MacOS.CoreAnimation;
 using static AppSharp.Platform.MacOS.Foundation;
 using static AppSharp.Platform.MacOS.ObjC;
 
@@ -38,6 +39,9 @@ public static partial class AppKit
         public static readonly Sel WantsLayerSel = new Sel("wantsLayer");
 
         public static readonly Sel SetWantsLayerSel = new Sel("setWantsLayer:");
+
+        public static readonly Sel LayerSel = new Sel("layer");
+        public static readonly Sel SetLayerSel = new Sel("setLayer:");
 
         public NSView(nint id, bool releaseOnDispose = true) : base(id, releaseOnDispose)
         {
@@ -139,6 +143,12 @@ public static partial class AppKit
             {
                 objc_msgSend(this, SetWantsLayerSel, value);
             }
+        }
+
+        public CALayer Layer
+        {
+            get => new CALayer(objc_msgSend_retIntPtr(this, LayerSel));
+            set => objc_msgSend(this, SetLayerSel, value);
         }
 
         public override NSView Autorelease() => (NSView)base.Autorelease();

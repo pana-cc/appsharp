@@ -32,20 +32,30 @@ nsAppRef.Activate();
 Console.WriteLine("Within autorelease pool...");
 
 // Create an Objective-C Window...
-using var nsWindow = new NSWindow("AppSharp FirstApp");
+// using var nsWindow = new NSWindow("AppSharp FirstApp");
+using var nsWindow = new AppSharpWindow("AppSharp FirstApp");
 
 // This view always gets resized based on the NSWindow
 using var rootView = new NSView()
 {
-    Flipped = true
+    Flipped = true,
 };
 
-using var red = NSColorRef.RGBA(1, 0, 0, 1);
+using var nsRed = NSColorRef.RGBA(1, 0, 0, 1);
+using var nsGreen = NSColorRef.RGBA(0, 1, 0, 1);
+using var nsBlue = NSColorRef.RGBA(0, 0, 1, 1);
+
+using var cgRed = CGColorRef.RGBA(1, 0, 0, 1);
+using var cgGreen = CGColorRef.RGBA(0, 1, 0, 1);
+using var cgBlue = CGColorRef.RGBA(0, 0, 1, 1);
+
 using var labelView = new NSTextField()
 {
+    Flipped = true,
+
     Frame = new NSRect(20, 20, 100, 300),
 
-    TextColor = red,
+    TextColor = nsRed,
 
     DrawsBackground = false,
     StringValue = "Hello World! dqwm lqwmd lwqkmd lqwkmd lqwkdm",
@@ -54,19 +64,62 @@ using var labelView = new NSTextField()
 };
 rootView.AddSubview(labelView);
 
-using var heartShapeLayer = new CAShapeLayer();
+using var boxShape = new CGMutablePathRef();
+boxShape.MoveTo(35, 10);
+boxShape.LineTo(20, 60);
+boxShape.LineTo(60, 28);
+boxShape.LineTo(10, 28);
+boxShape.LineTo(50, 60);
+boxShape.Close();
+
+using var heartShapeLayer = new CAShapeLayer()
+{
+    StrokeColor = cgRed,
+    FillColor = cgGreen,
+    LineWidth = 5,
+    Path = boxShape,
+
+    LineJoin = CAShapeLayer.CAShapeLayerLineJoin.Round,
+    FillRule = CAShapeLayer.CAShapeLayerFillRule.EvenOdd
+};
 
 using var border1 = new NSView()
 {
+    Flipped = true,
+
     WantsLayer = true,
-    Frame = new NSRect(100, 50, 50, 50)
+    Frame = new NSRect(100, 100, 70, 70),
+    Layer = heartShapeLayer
 };
+// border1.Layer.InsertAt(heartShapeLayer, 0);
+
 rootView.AddSubview(border1);
 
 nsWindow.ContentView = rootView;
 
 // Objective-C Runloop...
 nsAppRef.Run();
+
+public class AppSharpWindow : NSWindow
+{
+    public static readonly new Class Class =
+        NSWindow.Class
+            .Extend("AppSharpWindow")
+            .AddMethod("sendEvent:", sendEvent);
+
+    public AppSharpWindow(string title) : this(CreateNSWindowWithTitle(Class.Alloc(), title))
+    {
+    }
+
+    public AppSharpWindow(nint id, bool releaseOnDispose = true) : base(Class.New(), releaseOnDispose)
+    {
+    }
+
+    public static void sendEvent(nint self, nint sel, nint e)
+    {
+        Debug.WriteLine("AppSharpWindow sendEvent");
+    }
+}
 
 public class AppDelegate : NSObject
 {

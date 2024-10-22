@@ -8,6 +8,8 @@ public static partial class CoreAnimation
     {
         public static new readonly Class Class = new Class("CALayer");
 
+        private static readonly Sel InsertSublayerAtIndexSel = new Sel("insertSublayer:atIndex:");
+
         public CALayer() : base(Class.New())
         {
         }
@@ -15,5 +17,7 @@ public static partial class CoreAnimation
         public CALayer(nint id, bool releaseOnDispose = true) : base(id, releaseOnDispose)
         {
         }
+
+        public void InsertAt(CALayer layer, uint index) => objc_msgSend(this, InsertSublayerAtIndexSel, layer, index);
     }
 }

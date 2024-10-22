@@ -12,6 +12,12 @@ public static partial class CoreFoundation
     [DllImport(CoreFoundationLib)]
     public static extern void CFRelease(nint obj);
 
+    [DllImport(CoreFoundationLib, CharSet=CharSet.Unicode)]
+    public static extern string CFStringGetCStringPtr(nint obj);
+
+    [DllImport(CoreFoundationLib)]
+    public static extern nint CFStringGetCString(nint obj);
+
     [DllImport(CoreFoundationLib)]
     public static extern void CFRetain(nint obj);
 
