@@ -37,5 +37,9 @@ public static partial class CoreFoundation
         }
 
         public static implicit operator nint(CFStringRef cfStringRef) => cfStringRef.Self;
+
+        public static implicit operator string?(CFStringRef cfStringRef) =>
+            Marshal.PtrToStringUTF8(
+                ObjC.objc_msgSend_retIntPtr(cfStringRef, UTF8StringSel));
     }
 }

@@ -15,6 +15,12 @@ public static partial class AppKit
 
         private static readonly Sel LocationInWindowSel = new Sel("locationInWindow");
 
+        private static readonly Sel CharactersSel = new Sel("characters");
+
+        private static readonly Sel UTF8StringSel = new Sel("UTF8String");
+
+        private static readonly Sel KeyCodeSel = new Sel("keyCode");
+
         public readonly nint Self;
 
         public NSEventRef(nint self)
@@ -31,18 +37,17 @@ public static partial class AppKit
 
         public NSEventSubtype Subtype => (NSEventSubtype)objc_msgSend_retIntPtr(this, SubtypeSel);
 
-        public NSPoint LocationInWindow
-        {
-            get
-            {
-                NSPoint point = objc_msgSend_NSPointRet(this, LocationInWindowSel);
-                return point;
-            }
-        }
+        public NSPoint LocationInWindow => objc_msgSend_NSPointRet(this, LocationInWindowSel);
 
-        // TODO: Figure out how to do that... This is toast on Arm64!
+        public ushort KeyCode => objc_msgSend_USHortRet(this, KeyCodeSel);
+
+        public string? Characters => new CFStringRef(objc_msgSend_retIntPtr(this, CharactersSel));
+
         [DllImport(ObjC.LibObjCLib, EntryPoint = "objc_msgSend")]
-        public static extern NSPoint objc_msgSend_NSPointRet(nint obj, nint sel);
+        private static extern NSPoint objc_msgSend_NSPointRet(nint obj, nint sel);
+
+        [DllImport(ObjC.LibObjCLib, EntryPoint = "objc_msgSend")]
+        private static extern ushort objc_msgSend_USHortRet(nint obj, nint sel);
 
         public void Dispose()
         {

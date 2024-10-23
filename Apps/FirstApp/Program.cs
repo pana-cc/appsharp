@@ -119,10 +119,23 @@ public class AppSharpWindow : NSWindow
     public static void sendEvent(nint self, nint sel, nint e)
     {
         var nsEventRef = new NSEventRef(e);
-        // TODO: objc_msgSend_stret...
-        NSPoint point = nsEventRef.LocationInWindow;
-
-        Debug.WriteLine("AppSharpWindow sendEvent " + nsEventRef.Type + " " + point.x + " : " + point.y);
+        
+        var type = nsEventRef.Type;
+        if (type == NSEventRef.NSEventType.KeyDown || type == NSEventRef.NSEventType.KeyUp)
+        {
+            ushort keyCode = nsEventRef.KeyCode;
+            string? characters = nsEventRef.Characters;
+            Debug.WriteLine("AppSharpWindow sendEvent " + type + " " + keyCode + " " + characters);
+        }
+        else if (type == NSEventRef.NSEventType.MouseMoved)
+        {
+            NSPoint point = nsEventRef.LocationInWindow;
+            Debug.WriteLine("AppSharpWindow sendEvent " + type + " " + point.x + " : " + point.y);
+        }
+        else
+        {
+            Debug.WriteLine("AppSharpWindow sendEvent " + type);
+        }
 
         // Note you don't have to call super, and if you don't native UI wont receive events... even paint..
         Super super = new Super(self, NSWindow.Class.Id);
