@@ -42,6 +42,9 @@ public static partial class ObjC
     [DllImport(LibObjCLib, EntryPoint = "objc_msgSend")]
     public static extern void objc_msgSend(nint obj, nint sel, nint id1);
 
+    [DllImport(LibObjCLib, EntryPoint = "objc_msgSendSuper")]
+    public static extern void objc_msgSendSuper(ref Super obj, nint sel, nint id1);
+
     [DllImport(LibObjCLib, EntryPoint = "objc_msgSend")]
     public static extern void objc_msgSend(nint obj, nint sel, int id1);
 

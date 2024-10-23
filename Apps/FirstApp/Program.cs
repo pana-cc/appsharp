@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using AppSharp.Platform.MacOS;
 using static AppSharp.Platform.MacOS.AppKit;
 using static AppSharp.Platform.MacOS.CoreAnimation;
 using static AppSharp.Platform.MacOS.CoreGraphics;
@@ -111,13 +112,21 @@ public class AppSharpWindow : NSWindow
     {
     }
 
-    public AppSharpWindow(nint id, bool releaseOnDispose = true) : base(Class.New(), releaseOnDispose)
+    public AppSharpWindow(nint id, bool releaseOnDispose = true) : base(id, releaseOnDispose)
     {
     }
 
     public static void sendEvent(nint self, nint sel, nint e)
     {
-        Debug.WriteLine("AppSharpWindow sendEvent");
+        var nsEventRef = new NSEventRef(e);
+        // TODO: objc_msgSend_stret...
+        NSPoint point = nsEventRef.LocationInWindow;
+
+        Debug.WriteLine("AppSharpWindow sendEvent " + nsEventRef.Type + " " + point.x + " : " + point.y);
+
+        // Note you don't have to call super, and if you don't native UI wont receive events... even paint..
+        Super super = new Super(self, NSWindow.Class.Id);
+        ObjC.objc_msgSendSuper(ref super, sel, e);
     }
 }
 

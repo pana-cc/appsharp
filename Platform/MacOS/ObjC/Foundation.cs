@@ -9,9 +9,6 @@ public static partial class Foundation
     [DllImport(ObjC.LibObjCLib, EntryPoint = "objc_msgSend")]
     public static extern void objc_msgSend(nint obj, nint sel, NSRect rect);
 
-    [DllImport(ObjC.LibObjCLib, EntryPoint = "objc_msgSend_stret")]
-    public static extern nint objc_msgSend_stret(nint obj, nint sel);
-
     [StructLayout(LayoutKind.Sequential)]
     public struct NSSize
     {
