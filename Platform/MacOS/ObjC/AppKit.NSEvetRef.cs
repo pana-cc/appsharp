@@ -11,7 +11,7 @@ public static partial class AppKit
     {
         private static readonly Sel TypeSel = new Sel("type");
 
-        private static readonly Sel SubtypeSel = new Sel("type");
+        private static readonly Sel SubtypeSel = new Sel("subtype");
 
         private static readonly Sel LocationInWindowSel = new Sel("locationInWindow");
 
@@ -41,7 +41,7 @@ public static partial class AppKit
 
         public ushort KeyCode => objc_msgSend_USHortRet(this, KeyCodeSel);
 
-        public string? Characters => new CFStringRef(objc_msgSend_retIntPtr(this, CharactersSel));
+        public string? Characters => CFStringRef.Marshal(objc_msgSend_retIntPtr(this, CharactersSel));
 
         [DllImport(ObjC.LibObjCLib, EntryPoint = "objc_msgSend")]
         private static extern NSPoint objc_msgSend_NSPointRet(nint obj, nint sel);
@@ -100,20 +100,20 @@ public static partial class AppKit
         public enum NSEventSubtype : short
         {
             // event subtypes for NSEventTypeAppKitDefined events
-            NSEventSubtypeWindowExposed = 0,
-            NSEventSubtypeApplicationActivated = 1,
-            NSEventSubtypeApplicationDeactivated = 2,
-            NSEventSubtypeWindowMoved = 4,
-            NSEventSubtypeScreenChanged = 8,
+            WindowExposed = 0,
+            ApplicationActivated = 1,
+            ApplicationDeactivated = 2,
+            WindowMoved = 4,
+            ScreenChanged = 8,
             
             // event subtypes for NSEventTypeSystemDefined events
-            NSEventSubtypePowerOff = 1,
+            PowerOff = 1,
             
             // event subtypes for mouse events
-            NSEventSubtypeMouseEvent = 0,
-            NSEventSubtypeTabletPoint = 1,
-            NSEventSubtypeTabletProximity = 2,
-            NSEventSubtypeTouch = 3
+            MouseEvent = 0,
+            TabletPoint = 1,
+            TabletProximity = 2,
+            Touch = 3
         }
     }
 }

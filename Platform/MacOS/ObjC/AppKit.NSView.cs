@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using static AppSharp.Platform.MacOS.CoreAnimation;
 using static AppSharp.Platform.MacOS.Foundation;
 using static AppSharp.Platform.MacOS.ObjC;
@@ -53,17 +54,8 @@ public static partial class AppKit
 
         public NSRect Frame
         {
-            get
-            {
-                // nint rect = objc_msgSend_retIntPtr(this, FrameSel);
-                // TODO: Convert from NSRect* to NSRect...
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                objc_msgSend(this, SetFrameSel, value);
-            }
+            get => objc_msgSend_NSRectRet(this, FrameSel);
+            set => objc_msgSend(this, SetFrameSel, value);
         }
 
         public bool AutoresizesSubviews
@@ -157,5 +149,8 @@ public static partial class AppKit
         {
             objc_msgSend(this, AddSubviewSel, child);
         }
+
+        [DllImport(ObjC.LibObjCLib, EntryPoint = "objc_msgSend")]
+        private static extern NSRect objc_msgSend_NSRectRet(nint obj, nint sel);
     }
 }

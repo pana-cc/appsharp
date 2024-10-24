@@ -16,7 +16,8 @@ public static partial class AppKit
         private static readonly Sel SetReleasedWhenClosedSel = new Sel("setReleasedWhenClosed:");
         private static readonly Sel SetAcceptsMouseMovedEventsSel = new Sel("setAcceptsMouseMovedEvents:");
         private static readonly Sel MakeKeyAndOrderFrontSel = new Sel("makeKeyAndOrderFront:");
-        private static readonly Sel SetTitleSel = new Sel("setTitle:");
+
+        public static readonly Prop TitleProp = new Prop("title", "setTitle:");
 
         private static readonly Sel ContentViewSel = new Sel("contentView");
 
@@ -88,10 +89,24 @@ public static partial class AppKit
             if (title != null)
             {
                 using var cfStringRef = new CFStringRef(title);
-                objc_msgSend_retIntPtr(nsWindowRef, SetTitleSel, cfStringRef);
+                objc_msgSend_retIntPtr(nsWindowRef, TitleProp.SetSel, cfStringRef);
             }
             
             return nsWindowRef;
+        }
+
+        public string? Title
+        {
+            get
+            {
+                return CFStringRef.Marshal(ObjC.objc_msgSend_retIntPtr(this, TitleProp.GetSel));
+            }
+
+            set
+            {
+                using var cfStringRef = new CFStringRef(value);
+                objc_msgSend(this, TitleProp.SetSel, cfStringRef);
+            }
         }
 
         [DllImport(FoundationLib, EntryPoint = "objc_msgSend")]

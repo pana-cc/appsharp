@@ -96,6 +96,16 @@ using var border1 = new NSView()
 
 rootView.AddSubview(border1);
 
+// Some images...
+using var panaJpg = NSImage.LoadImageFile("assets/pana-cc.jpg");
+using var imageView = new NSImageView()
+{
+    Flipped = true,
+    Image = panaJpg,
+    Frame = new NSRect(180, 30, 96, 96)
+};
+rootView.AddSubview(imageView);
+
 nsWindow.ContentView = rootView;
 
 // Objective-C Runloop...
@@ -131,6 +141,11 @@ public class AppSharpWindow : NSWindow
         {
             NSPoint point = nsEventRef.LocationInWindow;
             Debug.WriteLine("AppSharpWindow sendEvent " + type + " " + point.x + " : " + point.y);
+        }
+        else if (type == NSEventRef.NSEventType.AppKitDefined)
+        {
+            var subtype = nsEventRef.Subtype;
+            Debug.WriteLine("AppSharpWindow sendEvent " + type + " " + subtype);
         }
         else
         {

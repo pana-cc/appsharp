@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices;
 using static AppSharp.Platform.MacOS.CoreFoundation;
 
 namespace AppSharp.Platform.MacOS;
